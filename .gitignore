@@ -14,3 +14,7 @@ Thumbs.db
 
 # Maven
 !.mvn/wrapper/maven-wrapper.jar
+
+# Allure local install (baixado pelo plugin)
+.allure/
+

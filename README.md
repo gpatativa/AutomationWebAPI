@@ -13,7 +13,7 @@ Projeto de automação de testes para validação da [Dog API](https://dog.ceo/d
 ## Pré-requisitos
 
 - JDK 17+
-- Maven 3.8+
+- Maven 3.8+ no PATH
 
 ## Estrutura do Projeto
 
@@ -34,46 +34,43 @@ src/test/java/org/example/
 ## Executar Testes
 
 ```bash
-# Windows
-.\mvnw.cmd test
-
-# Linux/macOS
-./mvnw test
+mvn test
 ```
 
 ## Relatório Allure
 
+### Gerar e visualizar
+
+**Opção recomendada:** gera e abre automaticamente no navegador via servidor local:
+
 ```bash
-# Windows — gerar e abrir no navegador
-.\mvnw.cmd allure:serve
-
-# Windows — apenas gerar
-.\mvnw.cmd allure:report
-# Relatório em: target/site/allure-maven-plugin/index.html
-
-# Linux/macOS
-./mvnw allure:serve
-./mvnw allure:report
+mvn allure:serve
 ```
 
-> **Nota:** Use sempre `.\mvnw.cmd` (Windows) ou `./mvnw` (Linux/macOS) no lugar de `mvn`, pois o Maven pode não estar instalado no PATH do sistema.
+**Apenas gerar** (sem abrir o navegador):
+
+```bash
+mvn allure:report
+# Relatório salvo em: target/site/allure-maven-plugin/index.html
+```
+
+> ⚠️ **Não abra o `index.html` diretamente pelo Explorer de Arquivos.**
+> O Allure carrega os dados via JavaScript e os navegadores bloqueiam esse tipo de chamada
+> quando o protocolo é `file://`. Use sempre `mvn allure:serve` para visualizar localmente.
+
+### Fluxo completo
+
+```bash
+# 1. Executar os testes (gera resultados em target/allure-results)
+mvn test
+
+# 2. Visualizar o relatório no navegador
+mvn allure:serve
+```
 
 ## Configurar URL Base
 
 Por padrão: `https://dog.ceo/api`
-
-Para alterar:
-
-```bash
-# Linux/macOS
-export DOG_API_BASE_URL=https://dog.ceo/api
-
-# Windows PowerShell
-$env:DOG_API_BASE_URL = "https://dog.ceo/api"
-
-# Windows CMD
-set DOG_API_BASE_URL=https://dog.ceo/api
-```
 
 ## Cenários de Teste
 
