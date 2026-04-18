@@ -7,6 +7,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import static io.restassured.module.jsv.JsonSchemaValidator.matchesJsonSchemaInClasspath;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
@@ -68,5 +69,12 @@ class RandomImageTest extends BaseTest {
         assertTrue(imageUrl.contains("images.dog.ceo"),
                 "URL deve ser do domínio images.dog.ceo: " + imageUrl);
     }
-}
 
+    @Test
+    @DisplayName("Deve estar em conformidade com o JSON Schema")
+    void shouldMatchJsonSchema() {
+        Response response = client.getRandomImage();
+
+        response.then().body(matchesJsonSchemaInClasspath("schemas/random-image.json"));
+    }
+}

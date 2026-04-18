@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.Map;
 
+import static io.restassured.module.jsv.JsonSchemaValidator.matchesJsonSchemaInClasspath;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
@@ -67,5 +68,12 @@ class BreedsListTest extends BaseTest {
         assertTrue(breeds.containsKey("hound"), "Deve conter a raça hound");
         assertTrue(breeds.containsKey("bulldog"), "Deve conter a raça bulldog");
     }
-}
 
+    @Test
+    @DisplayName("Deve estar em conformidade com o JSON Schema")
+    void shouldMatchJsonSchema() {
+        Response response = client.getAllBreeds();
+
+        response.then().body(matchesJsonSchemaInClasspath("schemas/breeds-list.json"));
+    }
+}

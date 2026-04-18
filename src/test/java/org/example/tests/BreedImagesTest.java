@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
+import static io.restassured.module.jsv.JsonSchemaValidator.matchesJsonSchemaInClasspath;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
@@ -80,6 +81,14 @@ class BreedImagesTest extends BaseTest {
                         "URL deve ser de imagem: " + url);
             }
         }
+
+        @Test
+        @DisplayName("Deve estar em conformidade com o JSON Schema")
+        void shouldMatchJsonSchema() {
+            Response response = client.getBreedImages(VALID_BREED);
+
+            response.then().body(matchesJsonSchemaInClasspath("schemas/breed-images.json"));
+        }
     }
 
     @Nested
@@ -113,6 +122,13 @@ class BreedImagesTest extends BaseTest {
             assertNotNull(message);
             assertFalse(message.isEmpty(), "Mensagem de erro não deve estar vazia");
         }
+
+        @Test
+        @DisplayName("Deve estar em conformidade com o JSON Schema de erro")
+        void shouldMatchErrorJsonSchema() {
+            Response response = client.getBreedImages(INVALID_BREED);
+
+            response.then().body(matchesJsonSchemaInClasspath("schemas/error.json"));
+        }
     }
 }
-
